@@ -1,13 +1,8 @@
 import express, { Response, Request } from 'express'
-import { router } from './utils'
+import { router } from './Router'
 
 export const app = express()
 const port = 3000;
-
-
-// app.get('/', (req: Request, res: Response, _next: () => void) => {
-//   res.send("Hello World");
-// })
 
 app.use(router)
 
