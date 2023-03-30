@@ -11,6 +11,6 @@ userRouter.get('/user', (req, res) => {
   res.send('user details')
 })
 
-userRouter.patch('/meals/:id', (req, res) => {
-  res.send('Update Meal')
+userRouter.patch('/users/:id', (req, res) => {
+  res.send('Update User')
 })
