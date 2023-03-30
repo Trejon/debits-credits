@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { mealsRouter } from './Meals'
-import { listRouter } from './Lists'
-import { userRouter } from './User'
+import { mealsRouter } from './meals-api'
+import { listRouter } from './lists-api'
+import { userRouter } from './user-api'
+import { internalRouter } from './internal-api'
 import { displayTime } from '../utils/time';
 
 export const router = Router();
@@ -18,3 +19,4 @@ router.get('/', (req, res) => {
 router.use(mealsRouter);
 router.use(listRouter);
 router.use(userRouter);
+router.use(internalRouter);

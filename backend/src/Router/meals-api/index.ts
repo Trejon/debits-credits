@@ -7,22 +7,22 @@ mealsRouter.use((req, res, next) => {
   next();
 })
 
-mealsRouter.get('/meals', (req, res) => {
+mealsRouter.get('/api/v1/meals', (req, res) => {
   res.send('meals')
 })
 
-mealsRouter.get('/meals/:id', (req, res) => {
+mealsRouter.get('/api/v1/meals/:id', (req, res) => {
   res.send('Meal')
 })
 
-mealsRouter.post('/meals', (req, res) => {
+mealsRouter.post('/api/v1/meals', (req, res) => {
   res.send('Create Meal')
 })
 
-mealsRouter.patch('/meals/:id', (req, res) => {
+mealsRouter.patch('/api/v1/meals/:id', (req, res) => {
   res.send('Update Meal')
 })
 
-mealsRouter.delete('/meals/:id', (req, res) => {
+mealsRouter.delete('/api/v1/meals/:id', (req, res) => {
   res.send('Delete Meal')
 })
