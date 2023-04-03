@@ -5,12 +5,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: base
     depends_on:
       - postgres
     env_file:
       - ./db/.env
     volumes:
-      - ./src:/home/node/app/src
+      - ./src:/usr/src/app/src
+      - .index:/index
       - ./nodemon.json:/home/node/app/nodemon.json
       - /src/node_modules
     container_name: fm-api

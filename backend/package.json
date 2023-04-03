@@ -5,10 +5,10 @@
   "main": "build/index.js",
   "scripts": {
     "build:docker": "docker build . -t trejonstalls/fm-api",
-    "start:db": "docker-compose -f db/docker-compose.yml up -d",
-    "stop:db": "docker-compose -f db/docker-compose.yml down",
+    "start:db": "docker-compose up -d postgres",
+    "stop:db": "docker-compose down postgres",
     "compile": "npx tsc",
-    "start": "npx tsc && nodemon index.ts",
+    "start": "NODE_PATH=./build node build/index.js",
     "docker:start": "nodemon -e ts --exec tsc -p ./tsconfig.json && node ./build/index.js",
     "start:test": "NODE_PATH=./build node build/index.js",
     "build:test": "tsc -p .",

@@ -24,8 +24,8 @@ EXPOSE 3001
 CMD [ "npm", "run", "docker:dev" ]
 
 
-# FROM base as production
+FROM base as production
 
-# ENV NODE_PATH=./build
+ENV NODE_PATH=./build
 
-# RUN npm run build:docker
+RUN npm run build:test
