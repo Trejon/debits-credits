@@ -12,10 +12,11 @@ services:
       - ./db/.env
     volumes:
       - ./src:/usr/src/app/src
-      - .index:/index
-      - ./nodemon.json:/home/node/app/nodemon.json
-      - /src/node_modules
+      - ./nodemon.json:/usr/src/app/nodemon.json
+      - /node_modules
     container_name: fm-api
+    networks:
+      - app-tier
     expose:
       - '3001'
     ports:
@@ -26,6 +27,7 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile
+    container_name: db_postgres
     env_file:
       - ./db/.env
     volumes:
@@ -33,3 +35,9 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
