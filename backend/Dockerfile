@@ -1,4 +1,7 @@
-FROM node:18
+FROM node:18.15-alpine3.16 as base
+
+# CMD [ "npm", "install", "typescript" ]
+# CMD ["npm", "install", "-g", "nodemon"]
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -8,13 +11,21 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-RUN npm install
+# CMD ["npm", "install"]
 # If you are building your code for production
 # RUN npm ci --only=production
+RUN npm install
 
 # Bundle app source
 COPY . .
 
-EXPOSE 8080
+EXPOSE 3001
 
-CMD [ "node", "build/index.js" ]
+CMD [ "npm", "run", "docker:dev" ]
+
+
+# FROM base as production
+
+# ENV NODE_PATH=./build
+
+# RUN npm run build:docker

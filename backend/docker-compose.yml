@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  node-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    env_file:
+      - ./db/.env
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+      - /src/node_modules
+    container_name: fm-api
+    expose:
+      - '3001'
+    ports:
+      - '3001:3001'
+    command: npm run docker:dev
+
+  postgres:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    env_file:
+      - ./db/.env
+    volumes:
+      - ./db/pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
