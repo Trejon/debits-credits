@@ -1,4 +1,5 @@
 export { app } from './src/app'
-import { startDB } from './db'
+// import { startDB } from './db'
+
 console.log("Starting DB")
 // startDB()

@@ -1,13 +1,13 @@
 export const displayTime = () => {
-  let date = new Date();
+  const date = new Date();
   let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
 
   let minutesString: string = minutes.toString();
   let secondsString: string = seconds.toString();
 
-  let ampm = hours >= 12 ? 'pm' : 'am';
+  const ampm = hours >= 12 ? 'pm' : 'am';
 
   if (hours > 12) {
     hours = hours - 12;;

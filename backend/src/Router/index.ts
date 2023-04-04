@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import Router from 'express-promise-router'
 import { mealsRouter } from './meals-api'
 import { listRouter } from './lists-api'
 import { userRouter } from './user-api'
