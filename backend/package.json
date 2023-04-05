@@ -14,7 +14,13 @@
     "build:test": "tsc -p .",
     "docker:dev": "nodemon ./index.ts",
     "lint": "npx eslint --ext .ts src/",
-    "lint:fix": "npx eslint --ext .ts src/ --fix"
+    "lint:fix": "npx eslint --ext .ts src/ --fix",
+    "migrate:latest": "knex migrate:latest",
+    "migrate:rollback": "knex migrate:rollback",
+    "migrate:one": "knex migrate:up",
+    "migrate:down-one": "knex migrate:down",
+    "migrate:create": "knex migrate:make <name> -x ts",
+    "seed": "knex seed:run"
   },
   "keywords": [],
   "author": "",

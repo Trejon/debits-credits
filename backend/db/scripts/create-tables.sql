@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS lists (
   description TEXT,
   user_id INTEGER NOT NULL,
   updated_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP NOT NULL
+  created_at TIMESTAMP NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS meals (
   user_id INTEGER NOT NULL,
   list_id INTEGER NOT NULL,
   updated_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP NOT NULL
+  created_at TIMESTAMP NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (list_id) REFERENCES lists(id)
 );

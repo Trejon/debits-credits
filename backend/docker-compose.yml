@@ -6,6 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
+      args:
+        - NODE_ENV=development
+        - DATABASE_URL=postgres://postgres:password@db_postgres:5432/fm_remake
     depends_on:
       - postgres
     env_file:

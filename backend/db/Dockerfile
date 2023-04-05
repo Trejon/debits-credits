@@ -6,4 +6,5 @@ EXPOSE 5432
 # they're ran in ascending order
 # e.g. 1.sql over 2.sql
 #  - ./db/create-tables.sql:/docker-entrypoint-initdb.d/1.sql
-COPY ./create-tables.sql /docker-entrypoint-initdb.d/create-tables.sql
+COPY ./scripts/create-tables.sql /docker-entrypoint-initdb.d/1.sql
+COPY ./scripts/seed-tables.sql /docker-entrypoint-initdb.d/2.sql
