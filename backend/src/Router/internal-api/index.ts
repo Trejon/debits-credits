@@ -20,9 +20,9 @@ internalRouter.post('/api/v1/login', (req, res) => {
 internalRouter.post('/api/v1/signup', async (req, res) => {
   console.log(`The user is ${JSON.stringify(req.body)}`)
 
-  let { name, email, password } = req.body;
+  const { name, email, password } = req.body;
 
-  let userData = {
+  const userData = {
     id: uuid(),
     name,
     email,

@@ -36,3 +36,5 @@ backend/db/pgdata
 backend/node_modules
 backend/.env
 backend/db/.env
+backend/cache-redis/.env
+

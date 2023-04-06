@@ -3,13 +3,16 @@ import { router } from './Router'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser';
+import { sessionStore, redisSetAsync, redisGetAsync, redisClient } from '../cache-redis/index'
+import session from "express-session"
+
 
 dotenv.config()
-
-const jsonParser = bodyParser.json()
-export const app = express()
-app.use(jsonParser)
 const port = process.env.PORT || 3001;
+
+export const app = express()
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 const corsOptions = {
   origin: '*',
@@ -18,12 +21,36 @@ const corsOptions = {
 
 app.use(cors())
 
-app.use(router)
-// parse requests of content-type - application/json
-app.use(express.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+app.use(async (req, res, next) => {
+  // await redisClient.connect()
+  next();
+})
+
+// Initialize sesssion storage.
+// app.use(
+//   session({
+//     store: sessionStore,
+//     resave: false, // required: force lightweight session keep alive (touch)
+//     saveUninitialized: false, // recommended: only save session when data exists
+//     secret: "keyboard cat",
+//   })
+// )
+
+// Use Redis connection pooling in your route handlers
+app.get('/set-session', async (req: any, res: { send: (arg0: string) => void; }) => {
+  await redisSetAsync('myVar', 'Hello, Redis!');
+  res.send('Session variable set.');
+});
+
+app.get('/get-session', async (req: any, res: { send: (arg0: string) => void; }) => {
+  const myVar = await redisGetAsync('myVar');
+  res.send(`Session variable value: ${myVar}`);
+});
+
+app.use(router)
+
+
 
 app.listen(port, () => {
   console.log(`I am now listening on port http://localhost:${port}`);

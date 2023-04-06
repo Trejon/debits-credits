@@ -1,12 +1,28 @@
 import { Router } from 'express'
 import { pg as knex, UserType } from '../../../db/index'
 
+declare module 'express-session' {
+  interface Session {
+    myVar: string;
+  }
+}
+
 export const mealsRouter = Router();
 
 // middleware that is specific to this router
 mealsRouter.use((req, res, next) => {
   next();
 })
+
+mealsRouter.get('/set-session', (req, res) => {
+  req.session.myVar = 'Hello, Redis!';
+  res.send('Session variable set.');
+});
+
+mealsRouter.get('/get-session', (req, res) => {
+  const myVar = req.session.myVar;
+  res.send(`Session variable value: ${myVar}`);
+});
 
 mealsRouter.get('/api/v1/meals', async (req, res) => {
   const results = await knex.select('*').from('meals');

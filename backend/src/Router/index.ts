@@ -4,6 +4,7 @@ import { listRouter } from './lists-api'
 import { userRouter } from './user-api'
 import { internalRouter } from './internal-api'
 import { displayTime } from '../utils/time';
+import { redisClient } from '../../cache-redis/index'
 
 export const router = Router();
 

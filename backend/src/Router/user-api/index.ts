@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { pg as knex, UserType } from '../../../db/index'
 import bodyParser from 'body-parser';
 
+
 export const userRouter = Router();
 const jsonParser = bodyParser.json()
 
@@ -14,13 +15,13 @@ userRouter.get('/api/v1/user', async (req, res) => {
   // Will change later once id is captured in some sort of global state
   // Should only fetch the logged in users info
   console.log("HERE:")
-  const results = await knex('users').where(knex.raw('id = ?', 1));
+  const results = await knex.select('*').from('users');
   res.send(results)
 })
 
 userRouter.patch('/api/v1/users/:id', async (req, res) => {
   console.log("HERE:")
-  let foundUser = await knex('users').where(knex.raw('id = ?', 1));
+  const foundUser = await knex('users').where(knex.raw('id = ?', 1));
   if (foundUser.length === 0) {
     return res.status(404).send('User not found');
   }

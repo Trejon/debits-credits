@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
 import { pg as knex } from '../../../db/index'
 import { validateList } from '../../utils/validateList'
+import { redisClient } from '../../../cache-redis';
 
 export const listRouter = Router();
 
@@ -11,6 +12,7 @@ listRouter.use((req, res, next) => {
 })
 
 listRouter.get('/api/v1/lists', async (req, res) => {
+  console.log(await redisClient.set('foo', 'bar'));
   const results = await knex.select('*').from('lists');
   res.send(results)
 })
@@ -22,11 +24,11 @@ listRouter.get('/api/v1/lists/:id', async (req, res) => {
 
 listRouter.post('/api/v1/lists', async (req, res) => {
   console.log(`The list is ${JSON.stringify(req.body)}`)
-  let userId = await knex.select('id').from('users').where('name', 'Michael')
+  const userId = await knex.select('id').from('users').where('name', 'Michael')
   // userId = JSON.stringify(userId[0].id)
 
-  let { name, description } = req.body;
-  let listData = {
+  const { name, description } = req.body;
+  const listData = {
     id: uuid(),
     name,
     description,
@@ -56,9 +58,9 @@ listRouter.patch('/api/v1/lists/:id', async (req, res) => {
   }
   prevList = prevList[0]
 
-  let { name, description } = req.body;
+  const { name, description } = req.body;
 
-  let listData = {
+  const listData = {
     id: prevList.id,
     name: name ? name : prevList.name,
     description: description ? description : prevList.description,

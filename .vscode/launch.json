@@ -6,22 +6,15 @@
   "configurations": [
     
     {
-      "type": "node",
+      "name": "Attach",
+      "port": 3001,
       "request": "attach",
-      "name": "Docker: Attach to Node",
-      "remoteRoot": "/usr/src/app"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/backend/src/Router/user-api/index.ts",
-      "outFiles": [
-        "${workspaceFolder}/**/*.js"
-      ]
+      "type": "node"
     }
+    
+
   ]
 }
