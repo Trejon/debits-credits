@@ -15,7 +15,6 @@ services:
       - ./db/.env
     volumes:
       - ./src:/usr/src/app/src
-      - ./nodemon.json:/usr/src/app/nodemon.json
       - /node_modules
     container_name: fm-api
     networks:
@@ -31,6 +30,7 @@ services:
       context: ./db
       dockerfile: Dockerfile
     container_name: db_postgres
+    user: postgres
     env_file:
       - ./db/.env
     volumes:

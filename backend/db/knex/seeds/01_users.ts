@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import userData from "./data/user-data.json";
+import { userData } from "./data/user-data";
 
 const table_name = "users";
 
