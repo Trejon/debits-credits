@@ -32,6 +32,7 @@ process.on('SIGINT', () => {
   });
 });
 
+
 export const sessionStore = new RedisStore({ client: redisClient });
 
 export const redisGetAsync = promisify(redisClient.get).bind(redisClient);

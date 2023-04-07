@@ -12,9 +12,8 @@ listRouter.use((req, res, next) => {
 })
 
 listRouter.get('/api/v1/lists', async (req, res) => {
-  console.log(await redisClient.set('foo', 'bar'));
   const results = await knex.select('*').from('lists');
-  res.send(results)
+  res.json(results)
 })
 
 listRouter.get('/api/v1/lists/:id', async (req, res) => {

@@ -28,14 +28,19 @@ app.use(async (req, res, next) => {
 })
 
 // Initialize sesssion storage.
-// app.use(
-//   session({
-//     store: sessionStore,
-//     resave: false, // required: force lightweight session keep alive (touch)
-//     saveUninitialized: false, // recommended: only save session when data exists
-//     secret: "keyboard cat",
-//   })
-// )
+app.use(
+  session({
+    store: sessionStore,
+    resave: false, // required: force lightweight session keep alive (touch)
+    saveUninitialized: false, // recommended: only save session when data exists
+    secret: "keyboard cat",
+    cookie: {
+      secure: false, // if true only transmit cookie over https
+      httpOnly: false, // if true prevent client side JS from reading the cookie 
+      maxAge: 1000 * 60 * 10 // session max age in miliseconds
+    }
+  })
+)
 
 // Use Redis connection pooling in your route handlers
 app.get('/set-session', async (req: any, res: { send: (arg0: string) => void; }) => {
