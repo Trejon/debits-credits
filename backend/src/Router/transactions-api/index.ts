@@ -10,8 +10,9 @@ transactionsRouter.use((req, res, next) => {
   next();
 })
 
-transactionsRouter.get('/api/v1/transactions', async (req, res) => {
-  const results = await knex.select('*').from('transactions');
+transactionsRouter.get('/api/v1/users/:user_id/transactions', async (req, res) => {
+  console.log("Hit the transactions route", req.params.user_id)
+  const results = await knex.select('*').from('transactions').where(knex.raw('user_id = ?', [req.params.user_id]));
   res.json(results)
 })
 
