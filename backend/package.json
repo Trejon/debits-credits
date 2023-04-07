@@ -1,10 +1,10 @@
 {
-  "name": "backend",
+  "name": "debits-credits-backend",
   "version": "1.0.0",
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "build:docker": "docker build . -t trejonstalls/fm-api",
+    "build:docker": "docker build . -t trejonstalls/debits-credits",
     "start:db": "docker-compose up -d postgres",
     "stop:db": "docker-compose down postgres",
     "start:all": "docker-compose up -d",

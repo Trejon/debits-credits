@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  node-api:
+  debits-credits-api:
     build:
       context: .
       dockerfile: Dockerfile
       target: base
       args:
         - NODE_ENV=development
-        - DATABASE_URL=postgres://postgres:password@db_postgres:5432/fm_remake
+        - DATABASE_URL=postgres://postgres:password@db_postgres:5432/debits-credits
     depends_on:
       - postgres
     env_file:
@@ -16,7 +16,7 @@ services:
     volumes:
       - ./src:/usr/src/app/src
       - /node_modules
-    container_name: fm-api
+    container_name: debits-credits-api
     networks:
       - app-tier
     expose:

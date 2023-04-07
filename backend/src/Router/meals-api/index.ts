@@ -10,16 +10,6 @@ mealsRouter.use((req, res, next) => {
   next();
 })
 
-mealsRouter.get('/set-session', (req, res) => {
-  req.session.username = 'Hello, Redis!';
-  res.send('Session variable set.');
-});
-
-mealsRouter.get('/get-session', (req, res) => {
-  const myVar = req.session.username;
-  res.send(`Session variable value: ${myVar}`);
-});
-
 mealsRouter.get('/api/v1/meals', async (req, res) => {
   const results = await knex.select('*').from('meals');
   res.json(results)
@@ -33,7 +23,6 @@ mealsRouter.get('/api/v1/meals/:id', async (req, res) => {
 mealsRouter.post('/api/v1/meals', async (req, res) => {
   console.log(`The meal is ${JSON.stringify(req.body)}`)
   const userId = await knex.select('id').from('users').where('name', 'Michael')
-  // userId = JSON.stringify(userId[0].id)
 
   const { name, meal_type, kind, url, description, meal_date } = req.body;
   const mealData = {
