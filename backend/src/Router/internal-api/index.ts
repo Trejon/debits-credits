@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
 import { pg as knex } from '../../../db/index'
-import { validateUser } from '../../utils/validateUser'
+import { validateUser } from '../../utils//validators/validateUser'
 
 declare module 'express-session' {
   interface Session {

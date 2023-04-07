@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS accounts (
   id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   balance BIGINT NOT NULL,
-  debit BOOLEAN,
+  debit BOOLEAN DEFAULT FALSE,
   credit_limit BIGINT,
   bank VARCHAR(255) NOT NULL,
   user_id uuid NOT NULL,

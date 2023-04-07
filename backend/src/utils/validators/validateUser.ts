@@ -1,4 +1,4 @@
-import { pg as knex, UserType } from '../../db/index'
+import { pg as knex, UserType } from '../../../db/index'
 
 type User = {
   created_at: Date,

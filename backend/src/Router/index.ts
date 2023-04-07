@@ -1,6 +1,6 @@
 import Router from 'express-promise-router'
-import { mealsRouter } from './meals-api'
-import { listRouter } from './lists-api'
+import { transactionsRouter } from './transactions-api'
+import { accountsRouter } from './accounts-api'
 import { userRouter } from './user-api'
 import { internalRouter } from './internal-api'
 import { displayTime } from '../utils/time';
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
 
 
 
-router.use(mealsRouter);
-router.use(listRouter);
+router.use(transactionsRouter);
+router.use(accountsRouter);
 router.use(userRouter);
 router.use(internalRouter);
