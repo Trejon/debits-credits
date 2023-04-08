@@ -1,20 +1,23 @@
-# Use the official Node.js image as the base image
-FROM node:14-alpine
+# Use an official Node.js runtime as a parent image
+FROM node:16-alpine
 
-# Set the working directory
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the container
+# Copy the package.json and package-lock.json files
 COPY package*.json ./
 
 # Install the dependencies
 RUN npm install
 
-# Copy the rest of the application files to the container
+# Copy the remaining application files
 COPY . .
 
-# Build the TypeScript app
+# Build the application
 RUN npm run build
 
-# Set the command to start the app with ts-node
-CMD ["npx", "ts-node", "src/index.ts"]
+# Expose the port that the application will run on
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "start"]

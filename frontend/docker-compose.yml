@@ -1,8 +1,9 @@
-version: "3.9"
+version: "3"
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  client:
+    container_name: debits-credits-client
+    build: .
     ports:
       - "3000:3000"
+    volumes:
+      - .:/app
