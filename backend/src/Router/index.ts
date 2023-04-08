@@ -2,6 +2,7 @@ import Router from 'express-promise-router'
 import { transactionsRouter } from './transactions-api'
 import { accountsRouter } from './accounts-api'
 import { userRouter } from './user-api'
+import { budgetRouter } from './budgets-api'
 import { internalRouter } from './internal-api'
 import { displayTime } from '../utils/time';
 import { redisClient } from '../../cache-redis/index'
@@ -37,5 +38,6 @@ router.get('/', (req, res) => {
 
 router.use(transactionsRouter);
 router.use(accountsRouter);
+router.use(budgetRouter)
 router.use(userRouter);
 router.use(internalRouter);

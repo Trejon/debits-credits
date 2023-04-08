@@ -11,8 +11,8 @@ accountsRouter.use((req, res, next) => {
   next();
 })
 
-accountsRouter.get('/api/v1/accounts', async (req, res) => {
-  const results = await knex.select('*').from('accounts');
+accountsRouter.get('/api/v1/:user_id/accounts', async (req, res) => {
+  const results = await knex.select('*').from('accounts').where(knex.raw('user_id = ?', [req.params.user_id]));
   res.json(results)
 })
 

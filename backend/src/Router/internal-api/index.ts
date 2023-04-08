@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
 import { pg as knex } from '../../../db/index'
 import { validateUser } from '../../utils//validators/validateUser'
+import bodyParser from 'body-parser';
 
 declare module 'express-session' {
   interface Session {
@@ -17,12 +18,14 @@ internalRouter.use((req, res, next) => {
 })
 
 // post '/api/v1/login', to: 'api/v1/sessions#create'
-internalRouter.post('/api/v1/login', (req, res) => {
+internalRouter.post('/api/v1/login', async (req, res) => {
+  console.log("req", JSON.stringify(req.body))
   const sess = req.session;
   const { username, password } = req.body
   sess.username = username
   sess.password = password
   // add username and password validation logic here later.If user is authenticated send the response as success
+  console.log("THIS IS THE USERNAME AND PASSWORD", username, password)
   res.end("success")
 })
 

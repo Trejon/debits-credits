@@ -7,8 +7,6 @@ DO $$
 DECLARE
   user1Id uuid = uuid_generate_v4();
   user2Id uuid = uuid_generate_v4();
-  user3Id uuid = uuid_generate_v4();
-  user4Id uuid = uuid_generate_v4();
   account1Id uuid = uuid_generate_v4();
   account2Id uuid = uuid_generate_v4();
   account3Id uuid = uuid_generate_v4();
@@ -23,7 +21,7 @@ BEGIN
 INSERT INTO users ("id", "name", "email", "password", "created_at", "updated_at")
 VALUES
 (user1Id::UUID, 'Antoinette', 'antoinette@email.com', 'password', '2020-07-05 00:00:00', '2020-07-15 00:00:00'),
-(user2Id::UUID, 'Michael', 'michael@email.com', 'password', '2020-07-19 00:00:00', '2020-07-15 00:00:00'),
+(user2Id::UUID, 'Michael', 'michael@email.com', 'password', '2020-07-19 00:00:00', '2020-07-15 00:00:00');
 INSERT INTO accounts("id","name","balance","debit","credit_limit","bank","user_id","created_at","updated_at")
 VALUES
 (account1Id::UUID,'Checking',5000,true,NULL,'Chase',user1Id::UUID,'2023-01-24 20:51:09.356843','2023-01-24 20:51:09.356843'),
