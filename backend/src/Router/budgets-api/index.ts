@@ -14,7 +14,7 @@ budgetRouter.use(async (req, res, next) => {
   let userLoggedIn = await validateUserIsLoggedIn(req, res, next)
   if (!userLoggedIn) {
     console.log("User is not logged in")
-    return res.status(401).send('Please log in to use this API')
+    return res.redirect("/login")
   }
   next();
 })

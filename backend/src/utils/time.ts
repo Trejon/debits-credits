@@ -1,8 +1,10 @@
+import moment from 'moment'
+
 export const displayTime = () => {
-  const date = new Date();
-  let hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
+  const date = moment().locale()
+  let hours = moment().hours();
+  const minutes = moment().minutes();
+  const seconds = moment().seconds();
 
   let minutesString: string = minutes.toString();
   let secondsString: string = seconds.toString();

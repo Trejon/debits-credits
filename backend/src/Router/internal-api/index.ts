@@ -3,7 +3,8 @@ import { v4 as uuid } from 'uuid'
 import { pg as knex } from '../../../db/index'
 import { validateUser } from '../../utils//validators/validateUser'
 import bodyParser from 'body-parser';
-import { redisClient, redisSetAsync } from '../../../cache-redis/index'
+import { redisClient, redisGetAsync, redisSetAsync } from '../../../cache-redis/index'
+import bcrypt from 'bcrypt'
 
 type User = {
   id: string,
@@ -42,7 +43,7 @@ internalRouter.post('/api/v1/login', async (req, res) => {
   let user = await knex.select('*').from('users').where(knex.raw('username = ?', username));
   let savedPassword = user[0].password;
 
-  if (savedPassword !== password) {
+  if (savedPassword !== password && !bcrypt.compareSync(password, savedPassword)) {
     res.end("Those credentials were incorrect. Try again.")
   } else {
     req.session.cookie = user[0]
@@ -56,11 +57,16 @@ internalRouter.post('/api/v1/login', async (req, res) => {
 internalRouter.post('/api/v1/signup', async (req, res) => {
   console.log(`The user is ${JSON.stringify(req.body)}`)
 
-  const { name, email, password } = req.body;
+  let { first_name, last_name, username, email, password } = req.body;
+
+  password ? password = bcrypt.hashSync(password, 10) : null
+  //  bcrypt.compareSync('hellosf', hash)
 
   const userData = {
     id: uuid(),
-    name,
+    first_name,
+    last_name,
+    username,
     email,
     password,
     created_at: new Date(),
@@ -72,9 +78,14 @@ internalRouter.post('/api/v1/signup', async (req, res) => {
     throw new Error('Invalid user')
   }
 
-  const DBResult = await knex.insert(userData).into("users");
-  await redisSetAsync('user', JSON.stringify(DBResult[0]));
-  console.log(DBResult)
+  try {
+    await knex.insert(userData).into("users");
+  } catch (err) {
+    return res.send(err)
+  }
+  const user = await knex.select('*').from('users').where(knex.raw('username = ?', username));
+  // console.log("USSSERR:::", DBResult)
+  await redisSetAsync('user', JSON.stringify(user[0]));
   res.json(req.body).end();
   // when you hit this API, your req should look like
   //   fetch('http://localhost:3001/api/v1/signup', {
@@ -83,29 +94,25 @@ internalRouter.post('/api/v1/signup', async (req, res) => {
   //     'Content-Type': 'application/json',
   //   },
   //   body: JSON.stringify({
-  // 		userFormData: {
-  //     name: "another-test",
-  //     email: "another@a.com",
+  //     first_name: "Mark",
+  //     last_name: "Twain",
+  //     username: "mt",
+  //     email: "mt@gmail.com",
   //     password: "password"
-  //   }})
+  //   })
   // })
-  // req.session.user = user;
 })
 
 // get '/api/v1/get_current_user', to: 'api/v1/sessions#get_current_user'
-internalRouter.get('/api/v1/get_current_user', (req, res) => {
-  res.send('Hello World');
-  // Another request to sessions/Redis cache
+internalRouter.get('/api/v1/get_current_user', async (req, res) => {
+  const user = await redisGetAsync("user").then((res: any) => JSON.parse(res))
+  res.json(user);
 })
 
 // delete '/api/v1/logout', to: 'api/v1/sessions#destroy'
 internalRouter.delete('/api/v1/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return console.log(err);
-    }
-    res.redirect("/")
-  })
+  redisClient.del('user');
+  res.redirect("/login")
 })
 
 // get '/api/v1/yelp', to: 'api/v1/yelp#fetch'

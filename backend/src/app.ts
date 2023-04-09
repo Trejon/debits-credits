@@ -6,7 +6,6 @@ import bodyParser from 'body-parser';
 import { redisStore, redisSetAsync, redisGetAsync, redisClient } from '../cache-redis/index'
 import session from "express-session"
 
-
 dotenv.config()
 const port = process.env.PORT || 3001;
 
@@ -31,7 +30,7 @@ app.use(
     cookie: {
       secure: false, // if true only transmit cookie over https
       httpOnly: false, // if true prevent client side JS from reading the cookie 
-      maxAge: 600000 // session max age in miliseconds
+      maxAge: 86500000 // session max age in miliseconds
     }
   })
 )
