@@ -5,11 +5,12 @@ import { userRouter } from './user-api'
 import { budgetRouter } from './budgets-api'
 import { internalRouter } from './internal-api'
 import { displayTime } from '../utils/time';
-import { redisClient } from '../../cache-redis/index'
+import { redisClient, redisGetAsync } from '../../cache-redis/index'
 
 export const router = Router();
 
-router.use((req, res, next) => {
+router.use(async (req, res, next) => {
+  // validateUserIsLoggedIn(req, res, next)
   displayTime();
   next();
 })
@@ -36,8 +37,8 @@ router.get('/', (req, res) => {
 
 
 
+router.use(internalRouter);
 router.use(transactionsRouter);
 router.use(accountsRouter);
 router.use(budgetRouter)
 router.use(userRouter);
-router.use(internalRouter);

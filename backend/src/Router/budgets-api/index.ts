@@ -4,12 +4,18 @@ import { pg as knex } from '../../../db/index'
 import { validateBudget } from '../../utils/validators/validateBudget'
 import { redisClient } from '../../../cache-redis';
 import bodyParser from 'body-parser';
+import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 
 export const budgetRouter = Router();
 budgetRouter.use(bodyParser.json())
 
 // middleware that is specific to this router
-budgetRouter.use((req, res, next) => {
+budgetRouter.use(async (req, res, next) => {
+  let userLoggedIn = await validateUserIsLoggedIn(req, res, next)
+  if (!userLoggedIn) {
+    console.log("User is not logged in")
+    return res.status(401).send('Please log in to use this API')
+  }
   next();
 })
 

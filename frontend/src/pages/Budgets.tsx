@@ -14,7 +14,7 @@ const BudgetsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/budgets")
+      .get("http://localhost:3001/api/v1/42a5d6f1-b874-4f65-b53d-63398d6a8d6d/budgets")
       .then((response) => setBudgets(response.data))
       .catch((error) => setError(error.message));
   }, []);

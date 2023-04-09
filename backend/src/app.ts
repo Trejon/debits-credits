@@ -3,7 +3,7 @@ import { router } from './Router'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser';
-import { sessionStore, redisSetAsync, redisGetAsync, redisClient } from '../cache-redis/index'
+import { redisStore, redisSetAsync, redisGetAsync, redisClient } from '../cache-redis/index'
 import session from "express-session"
 
 
@@ -21,36 +21,37 @@ const corsOptions = {
 
 app.use(cors())
 
+// Initialize sesssion storage.
+app.use(
+  session({
+    store: redisStore,
+    resave: false, // required: force lightweight session keep alive (touch)
+    saveUninitialized: false, // recommended: only save session when data exists
+    secret: process.env.SESSION_SECRET || 'keyboard cat',
+    cookie: {
+      secure: false, // if true only transmit cookie over https
+      httpOnly: false, // if true prevent client side JS from reading the cookie 
+      maxAge: 600000 // session max age in miliseconds
+    }
+  })
+)
+
 
 app.use(async (req, res, next) => {
   // await redisClient.connect()
   next();
 })
 
-// Initialize sesssion storage.
-app.use(
-  session({
-    store: sessionStore,
-    resave: false, // required: force lightweight session keep alive (touch)
-    saveUninitialized: false, // recommended: only save session when data exists
-    secret: "keyboard cat",
-    cookie: {
-      secure: false, // if true only transmit cookie over https
-      httpOnly: false, // if true prevent client side JS from reading the cookie 
-      maxAge: 1000 * 60 * 10 // session max age in miliseconds
-    }
-  })
-)
 
 // Use Redis connection pooling in your route handlers
 app.get('/set-session', async (req: any, res: { send: (arg0: string) => void; }) => {
-  await redisSetAsync('myVar', 'Hello, Redis!');
+  await redisSetAsync('user', 'some user data');
   res.send('Session variable set.');
 });
 
 app.get('/get-session', async (req: any, res: { send: (arg0: string) => void; }) => {
-  const myVar = await redisGetAsync('myVar');
-  res.send(`Session variable value: ${myVar}`);
+  const user = await redisGetAsync('user');
+  res.send(`Session variable value: ${user}`);
 });
 
 app.use(router)

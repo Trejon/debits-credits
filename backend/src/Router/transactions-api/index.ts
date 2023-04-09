@@ -2,11 +2,17 @@ import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
 import { validateTransaction } from '../../utils/validators/validateTransaction'
 import { pg as knex, UserType } from '../../../db/index'
+import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 
 export const transactionsRouter = Router();
 
 // middleware that is specific to this router
-transactionsRouter.use((req, res, next) => {
+transactionsRouter.use(async (req, res, next) => {
+  let userLoggedIn = await validateUserIsLoggedIn(req, res, next)
+  if (!userLoggedIn) {
+    console.log("User is not logged in")
+    return res.status(401).send('Please log in to use this API')
+  }
   next();
 })
 

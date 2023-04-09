@@ -1,13 +1,23 @@
-import { Router } from 'express'
+import express, { Router } from 'express'
 import { v4 as uuid } from 'uuid'
 import { pg as knex } from '../../../db/index'
 import { validateUser } from '../../utils//validators/validateUser'
 import bodyParser from 'body-parser';
+import { redisClient, redisSetAsync } from '../../../cache-redis/index'
 
+type User = {
+  id: string,
+  first_name: string,
+  last_name: string,
+  username: string,
+  email: string,
+  password: string,
+  updated_at: Date,
+  created_at: Date
+}
 declare module 'express-session' {
   interface Session {
-    username: string;
-    password: string;
+    user: string | number
   }
 }
 
@@ -17,16 +27,29 @@ internalRouter.use((req, res, next) => {
   next();
 })
 
+internalRouter.use(express.json())
+
+internalRouter.get('/api/v1/login', (req, res) => {
+  res.json("You need to log in")
+})
+
 // post '/api/v1/login', to: 'api/v1/sessions#create'
 internalRouter.post('/api/v1/login', async (req, res) => {
-  console.log("req", JSON.stringify(req.body))
-  const sess = req.session;
+  console.log("REQ SESSION", JSON.stringify(req.session))
   const { username, password } = req.body
-  sess.username = username
-  sess.password = password
   // add username and password validation logic here later.If user is authenticated send the response as success
-  console.log("THIS IS THE USERNAME AND PASSWORD", username, password)
-  res.end("success")
+  // bcrypt password
+  let user = await knex.select('*').from('users').where(knex.raw('username = ?', username));
+  let savedPassword = user[0].password;
+
+  if (savedPassword !== password) {
+    res.end("Those credentials were incorrect. Try again.")
+  } else {
+    req.session.cookie = user[0]
+    await redisSetAsync('user', JSON.stringify(user[0]));
+    res.end("success!")
+  }
+  console.log("Final Session", req.session)
 })
 
 // post '/api/v1/signup', to: 'api/v1/users#create'
@@ -50,6 +73,7 @@ internalRouter.post('/api/v1/signup', async (req, res) => {
   }
 
   const DBResult = await knex.insert(userData).into("users");
+  await redisSetAsync('user', JSON.stringify(DBResult[0]));
   console.log(DBResult)
   res.json(req.body).end();
   // when you hit this API, your req should look like
@@ -65,6 +89,7 @@ internalRouter.post('/api/v1/signup', async (req, res) => {
   //     password: "password"
   //   }})
   // })
+  // req.session.user = user;
 })
 
 // get '/api/v1/get_current_user', to: 'api/v1/sessions#get_current_user'
@@ -98,14 +123,14 @@ internalRouter.post('/api/v1/search', (req, res) => {
   res.send('Hello World');
 })
 
-internalRouter.get('/set-session', (req, res) => {
-  req.session.username = 'Hello, Redis!';
-  res.send('Session variable set.');
-});
+// internalRouter.get('/set-session', (req, res) => {
+//   req.session.username = 'Hello, Redis!';
+//   res.send('Session variable set.');
+// });
 
 internalRouter.get('/get-session', (req, res) => {
-  const myVar = req.session.username;
-  res.send(`Session variable value: ${myVar}`);
+  const user = req.session.user;
+  res.send(`Session variable value: ${user}`);
 });
 
 

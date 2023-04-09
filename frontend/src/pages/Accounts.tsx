@@ -25,7 +25,7 @@ const AccountsPage = () => {
 
   // useEffect(() => {
   //   axios
-  //     .get("http://localhost:5000/accounts")
+  //     .get("http://localhost:3001/api/v1/api/v1/accounts")
   //     .then((response) => setAccounts(response.data))
   //     .catch((error) => setError(error.message));
   // }, []);

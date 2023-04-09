@@ -19,7 +19,7 @@ const TransactionsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/transactions")
+      .get("http://localhost:3001/api/v1/transactions")
       .then((response) => setTransactions(response.data))
       .catch((error) => setError(error.message));
   }, []);

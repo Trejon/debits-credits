@@ -1,13 +1,19 @@
 import { Router } from 'express'
 import { pg as knex, UserType } from '../../../db/index'
 import bodyParser from 'body-parser';
+import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 
 
 export const userRouter = Router();
 const jsonParser = bodyParser.json()
 
 // middleware that is specific to this router
-userRouter.use((req, res, next) => {
+userRouter.use(async (req, res, next) => {
+  let userLoggedIn = await validateUserIsLoggedIn(req, res, next)
+  if (!userLoggedIn) {
+    console.log("User is not logged in")
+    return res.status(401).send('Please log in to use this API')
+  }
   next();
 })
 

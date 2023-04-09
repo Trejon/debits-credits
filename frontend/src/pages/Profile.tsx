@@ -15,7 +15,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/profile")
+      .get("http://localhost:3001/api/v1/profile")
       .then((response) => setUserProfile(response.data))
       .catch((error) => setError(error.message));
   }, []);
