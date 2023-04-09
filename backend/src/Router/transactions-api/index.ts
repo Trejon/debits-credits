@@ -31,13 +31,13 @@ transactionsRouter.post('/api/v1/transactions', async (req, res) => {
   const userId = await knex.select('id').from('users').where('name', 'Michael')
   const accountId = await knex.select('id').from('accounts').where('name', 'Chase')
 
-  const { title, amount, credit, category, occurrence_frequency, due_by_date, payee } = req.body;
+  const { title, amount, credit, memo, occurrence_frequency, due_by_date, payee } = req.body;
   const transactionData = {
     id: uuid(),
     title,
     amount,
     credit,
-    category,
+    memo,
     occurrence_frequency,
     due_by_date,
     payee,
@@ -67,14 +67,14 @@ transactionsRouter.patch('/api/v1/transactions/:id', async (req, res) => {
   }
   prevTransaction = prevTransaction[0]
 
-  const { title, amount, credit, category, occurrence_frequency, due_by_date, payee } = req.body;
+  const { title, amount, credit, memo, occurrence_frequency, due_by_date, payee } = req.body;
 
   const transactionData = {
     id: prevTransaction.id,
     title: title ? title : prevTransaction.title,
     amount: amount ? amount : prevTransaction.amount,
     credit: credit ? credit : prevTransaction.credit,
-    category: category ? category : prevTransaction.category,
+    memo: memo ? memo : prevTransaction.memo,
     occurrence_frequency: occurrence_frequency ? occurrence_frequency : prevTransaction.occurrence_frequency,
     due_by_date: due_by_date ? due_by_date : prevTransaction.due_by_date,
     payee: payee ? payee : prevTransaction.payee,

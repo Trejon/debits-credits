@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 interface Budget {
   id: number;
@@ -11,10 +12,11 @@ interface Budget {
 const BudgetsPage = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [error, setError] = useState("");
+  const user = useSelector((state: any) => state.user.currentUser)
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/v1/42a5d6f1-b874-4f65-b53d-63398d6a8d6d/budgets")
+      .get(`http://localhost:3001/api/v1/${user.id}/budgets`)
       .then((response) => setBudgets(response.data))
       .catch((error) => setError(error.message));
   }, []);

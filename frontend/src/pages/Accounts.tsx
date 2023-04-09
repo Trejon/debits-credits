@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { connect, useSelector } from "react-redux";
+import { getCurrentUser } from "../actions/currentUser";
 
 interface Account {
   id: number;
@@ -19,19 +21,30 @@ interface Transaction {
   amount: number;
 }
 
-const AccountsPage = () => {
+const AccountsPage = (props: any) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [error, setError] = useState("");
+  const user = useSelector((state: any) => state.user.currentUser)
 
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3001/api/v1/api/v1/accounts")
-  //     .then((response) => setAccounts(response.data))
-  //     .catch((error) => setError(error.message));
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/api/v1/${user.id}/accounts`)
+      .then((response) => setAccounts(response.data))
+      .catch((error) => setError(error.message));
+  }, []);
+
+  const setCurrentUser = (event: any) => {
+    props.getCurrentUser();
+  }
 
   return (
     <div className="accounts-container">
+      <button onClick={setCurrentUser}>Test redux action</button>
+      <pre>
+        {
+          JSON.stringify(props)
+        }
+      </pre>
       <h2>Accounts</h2>
       {error && <div className="error">{error}</div>}
       <table className="accounts-table">
@@ -62,4 +75,12 @@ const AccountsPage = () => {
   );
 };
 
-export default AccountsPage;
+const mapStateToProps = (state: any) => ({
+  ...state
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  setCurrentUser: () => dispatch(getCurrentUser())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountsPage);

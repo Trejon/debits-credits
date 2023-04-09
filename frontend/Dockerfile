@@ -14,7 +14,9 @@ RUN npm install
 COPY . .
 
 # Build the application
-RUN npm run build
+# Slows down the build process, but is necessary for production
+# Will uncomment when ready to deploy
+# RUN npm run build
 
 # Expose the port that the application will run on
 EXPOSE 3000

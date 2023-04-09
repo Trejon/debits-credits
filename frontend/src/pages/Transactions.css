@@ -1,0 +1,52 @@
+.transactions {
+  margin: 50px;
+}
+
+.transactions-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.transaction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.transaction-name {
+  font-weight: bold;
+}
+
+.transaction-amount {
+  font-weight: bold;
+}
+
+.transaction-debit {
+  font-style: italic;
+}
+
+.transaction-memo {
+  font-style: italic;
+}
+
+.transaction-frequency {
+  font-style: italic;
+}
+
+.transaction-due {
+  font-style: italic;
+}
+
+.transaction-payee {
+  font-style: italic;
+}

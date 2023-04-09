@@ -5,7 +5,7 @@ type Transaction = {
   title: string,
   amount: number,
   credit: boolean,
-  category: string,
+  memo: string,
   occurrence_frequency: string,
   due_by_date: Date,
   payee: string,

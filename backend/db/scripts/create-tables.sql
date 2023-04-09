@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   title VARCHAR(255) NOT NULL,
   amount BIGINT NOT NULL,
   credit BOOLEAN NOT NULL,
-  category VARCHAR(255) NOT NULL,
+  memo VARCHAR(255) NOT NULL,
   occurrence_frequency VARCHAR(255),
   due_by_date TIMESTAMP,
   payee VARCHAR(255),

@@ -17,11 +17,11 @@ userRouter.use(async (req, res, next) => {
   next();
 })
 
-userRouter.get('/api/v1/user', async (req, res) => {
+userRouter.get('/api/v1/user/:id', async (req, res) => {
   // Will change later once id is captured in some sort of global state
   // Should only fetch the logged in users info
   console.log("HERE:")
-  const results = await knex.select('*').from('users');
+  const results = await knex.select('*').from('users').where(knex.raw('id = ?', req.params.id));
   res.send(results)
 })
 

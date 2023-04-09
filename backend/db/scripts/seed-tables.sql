@@ -27,7 +27,7 @@ VALUES
 (account1Id::UUID,'Checking',5000,true,NULL,'Chase',user1Id::UUID,'2023-01-24 20:51:09.356843','2023-01-24 20:51:09.356843'),
 (account2Id::UUID,'Savings',2000000,true,NULL,'Bank of America',user1Id::UUID,'2023-01-24 20:51:09.356843','2023-01-24 20:51:09.356843'),
 (account3Id::UUID,'Credit Card',8000,false,1000000000,'Wells Fargo',user1Id::UUID,'2023-01-24 20:51:09.356843','2023-01-24 20:51:09.356843');
-INSERT INTO transactions("id","title","amount","credit","category","occurrence_frequency","due_by_date","payee","user_id","account_id","created_at","updated_at")
+INSERT INTO transactions("id","title","amount","credit","memo","occurrence_frequency","due_by_date","payee","user_id","account_id","created_at","updated_at")
 VALUES
 (transaction1Id::UUID,'Red Lobster',5000,true,'Food',Null,'2019-02-03','Someone', user1Id::UUID, account2Id::UUID,'2023-01-24 20:51:09.372587','2023-01-24 20:51:09.372587'),
 (transaction2Id::UUID,'Gas',3000,false,'Transportation',Null,'2019-02-03','Someone Else', user1Id::UUID, account1Id::UUID,'2023-01-24 20:51:09.378276','2023-01-24 20:51:09.378276'),

@@ -106,7 +106,7 @@ internalRouter.post('/api/v1/signup', async (req, res) => {
 // get '/api/v1/get_current_user', to: 'api/v1/sessions#get_current_user'
 internalRouter.get('/api/v1/get_current_user', async (req, res) => {
   const user = await redisGetAsync("user").then((res: any) => JSON.parse(res))
-  res.json(user);
+  return res.json(user);
 })
 
 // delete '/api/v1/logout', to: 'api/v1/sessions#destroy'
