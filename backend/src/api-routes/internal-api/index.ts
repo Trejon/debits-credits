@@ -1,9 +1,9 @@
 import express, { Router } from 'express'
 import { v4 as uuid } from 'uuid'
-import { pg as knex } from '../../../db/index'
+import { pg as knex } from '../../services/db/index'
 import { validateUser } from '../../utils//validators/validateUser'
 import bodyParser from 'body-parser';
-import { redisClient, redisGetAsync, redisSetAsync } from '../../../cache-redis/index'
+import { redisClient, redisGetAsync, redisSetAsync } from '../../services/cache-redis/index'
 import bcrypt from 'bcrypt'
 
 type User = {

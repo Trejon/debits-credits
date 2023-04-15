@@ -53,17 +53,17 @@ const TransactionsPage = () => {
       <ul className="transaction-list">
         {transactions.map((transaction) => (
           <li key={transaction.id} className="transaction">
-            <div>
+            <div className="left-content">
               <div className="transaction-name">{transaction.title}</div>
               <div className="transaction-description">{transaction.memo}</div>
             </div>
-            <div>
+            <div className="right-content">
               <div className="transaction-amount">${displayTotalAmount(transaction.amount)}</div>
+              <div className="transaction-memo">Memo: {transaction.memo}</div>
               <div className="transaction-debit">
                 {transaction.credit ? "Credit Account" : "Debit Account"}
               </div>
-              <div className="transaction-memo">Memo: {transaction.memo}</div>
-              <div className="transaction-frequency">Frequency: {transaction.occurrence_frequency ? transaction.occurrence_frequency.toString() : null}</div>
+              <div className="transaction-frequency">Frequency: {transaction.occurrence_frequency ? transaction.occurrence_frequency.toString() : "Once"}</div>
               <div className="transaction-due">Due: {moment(transaction.due_by_date).toLocaleString()}</div>
               <div className="transaction-payee">Payee: {transaction.payee}</div>
             </div>

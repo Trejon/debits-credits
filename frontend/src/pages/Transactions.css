@@ -1,5 +1,6 @@
 .transactions {
-  margin: 50px;
+  margin: 50px 300px;
+  text-align: center;
 }
 
 .transactions-heading {
@@ -25,6 +26,7 @@
 
 .transaction-name {
   font-weight: bold;
+  font-size:larger;
 }
 
 .transaction-amount {
@@ -49,4 +51,13 @@
 
 .transaction-payee {
   font-style: italic;
+}
+
+.left-content {
+  margin-left: 100px;
+  letter-spacing: .1vw;
+}
+
+.right-content {
+  margin-right: 100px;
 }

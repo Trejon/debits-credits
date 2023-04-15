@@ -12,7 +12,7 @@ services:
     depends_on:
       - postgres
     env_file:
-      - ./db/.env
+      - ./src/services/db/.env
     volumes:
       - ./src:/usr/src/app/src
       - /node_modules
@@ -27,14 +27,14 @@ services:
 
   postgres:
     build:
-      context: ./db
+      context: ./src/services/db
       dockerfile: Dockerfile
     container_name: db_postgres
     user: postgres
     env_file:
-      - ./db/.env
+      - ./src/services/db/.env
     volumes:
-      - ./db/pgdata:/var/lib/postgresql/data
+      - ./src/services/db/pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: always
@@ -43,11 +43,11 @@ services:
 
   cache:
     build:
-      context: ./cache-redis
+      context: ./src/services/cache-redis
       dockerfile: Dockerfile
     container_name: cache
     env_file:
-      - ./cache-redis/.env
+      - ./src/services/cache-redis/.env
     environment:
       - REDIS_URL=redis://cache:6379
     ports:
@@ -57,8 +57,87 @@ services:
     networks:
       - app-tier
     volumes:
-      - ./cache-redis/cache:/data
+      - ./src/services/cache-redis/cache:/data
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    hostname: zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
 networks:
   app-tier:
     driver: bridge
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:7.3.2
+  #   container_name: zookeeper
+  #   environment:
+  #     ZOOKEEPER_CLIENT_PORT: 2181
+  #     ZOOKEEPER_TICK_TIME: 2000
+  #     ZOOKEEPER_SYNC_LIMIT: 2
+
+  # kafka-broker:
+  #   image: confluentinc/cp-kafka:7.3.2
+  #   container_name: kafka-broker
+  #   # user: '0:0'
+  #   ports:
+  #     - "9092:9092"
+  #   depends_on:
+  #     - zookeeper
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+  #     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka-broker:29092
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #     KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+  #     KAFKA_SCHEMA_REGISTRY_URL: "schema-registry:8085"
+  #     KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+  #     KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  # schema-registry:
+  #   image: confluentinc/cp-schema-registry:7.0.9
+  #   container_name: schema-registry
+  #   restart: always
+  #   depends_on:
+  #     - kafka-broker
+  #   environment:
+  #     SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: SSL://kafka-broker:29092,SSL://localhost:9092
+  #     SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: 'zookeeper:2181'
+  #     SCHEMA_REGISTRY_HOST_NAME: schema-registry
+  #     SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8085'
+  #     SCHEMA_REGISTRY_DEBUG: true
+  #   ports:
+  #     - 8085:8085
+  # kafka-rest-proxy:
+  #   image: confluentinc/cp-kafka-rest:7.0.0
+  #   restart: always
+  #   depends_on:
+  #     - kafka-broker
+  #   environment:
+  #     KAFKA_REST_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+  #     KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
+  #     KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schemaregistry:8085"
+  #     KAFKA_REST_HOST_NAME: kafka-rest-proxy
+  #     # KAFKA_REST_DEBUG: "true"
+  #   ports:
+  #     - 8082:8082

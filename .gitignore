@@ -32,11 +32,12 @@ frontend/yarn-error.log*
 
 # backend
 backend/build
-backend/db/pgdata
+backend/src/services/db/pgdata
 backend/node_modules
 backend/.env
-backend/db/.env
-backend/cache-redis/.env
+backend/src/services/db/.env
+backend/src/services/cache-redis/.env
 
+backend/src/config
 
 frontend/.env

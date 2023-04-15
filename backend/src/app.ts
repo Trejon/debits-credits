@@ -1,10 +1,12 @@
 import express, { Response, Request } from 'express'
-import { router } from './Router'
+import compression from 'compression'
+import { router } from './api-routes'
 import * as dotenv from 'dotenv'
 import cors from 'cors'
 import bodyParser from 'body-parser';
-import { redisStore, redisSetAsync, redisGetAsync, redisClient } from '../cache-redis/index'
+import { redisStore, redisSetAsync, redisGetAsync, redisClient } from './services/cache-redis/index'
 import session from "express-session"
+import { produceAndConsumeMessage } from './services/kafka-client/index'
 
 dotenv.config()
 const port = process.env.PORT || 3001;
@@ -12,6 +14,7 @@ const port = process.env.PORT || 3001;
 export const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(compression())
 
 const corsOptions = {
   origin: '*',
@@ -34,6 +37,8 @@ app.use(
     }
   })
 )
+
+produceAndConsumeMessage()
 
 
 app.use(async (req, res, next) => {

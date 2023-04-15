@@ -25,6 +25,7 @@ const AccountsPage = (props: any) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [error, setError] = useState("");
   const user = useSelector((state: any) => state.user.currentUser)
+  console.log("Current user on AccountsPage: ", props.user.currentUser)
 
   useEffect(() => {
     axios

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { pg as knex, UserType } from '../../../db/index'
+import { pg as knex, UserType } from '../../services/db/index'
 import bodyParser from 'body-parser';
 import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 

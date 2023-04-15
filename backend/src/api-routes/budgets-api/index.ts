@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
-import { pg as knex } from '../../../db/index'
+import { pg as knex } from '../../services/db/index'
 import { validateBudget } from '../../utils/validators/validateBudget'
-import { redisClient } from '../../../cache-redis';
+import { redisClient } from '../../services/cache-redis';
 import bodyParser from 'body-parser';
 import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
 import { validateTransaction } from '../../utils/validators/validateTransaction'
-import { pg as knex, UserType } from '../../../db/index'
+import { pg as knex, UserType } from '../../services/db/index'
 import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 
 export const transactionsRouter = Router();

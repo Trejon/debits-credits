@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { v4 as uuid } from 'uuid'
-import { pg as knex } from '../../../db/index'
+import { pg as knex } from '../../services/db/index'
 import { validateAccount } from '../../utils/validators/validateAccount'
-import { redisClient } from '../../../cache-redis';
+import { redisClient } from '../../services/cache-redis';
 import { validateUserIsLoggedIn } from '../../utils/validators/validateLogin';
 
 export const accountsRouter = Router();

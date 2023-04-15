@@ -1,4 +1,4 @@
-import { pg as knex, UserType } from '../../../db/index'
+import { pg as knex, UserType } from '../../services/db/index'
 
 export type Account = {
   id: string,

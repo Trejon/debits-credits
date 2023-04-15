@@ -5,7 +5,7 @@ import { userRouter } from './user-api'
 import { budgetRouter } from './budgets-api'
 import { internalRouter } from './internal-api'
 import { displayTime } from '../utils/time';
-import { redisClient, redisGetAsync } from '../../cache-redis/index'
+import { redisClient, redisGetAsync } from '../services/cache-redis/index'
 
 export const router = Router();
 
