@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { redisClient, redisGetAsync, redisSetAsync } from '../../services/cache-redis/index'
 import bcrypt from 'bcrypt'
 import { kafkaClient, kafkaAdmin } from '../../services/kafka-client';
+import { run1 } from '../../services/kafka-client/test-consumer-producer';
 
 type User = {
   id: string,
@@ -189,6 +190,16 @@ internalRouter.get('/kafka-get', async (req, res) => {
     },
   })
   res.send('Kafka message received')
+})
+
+internalRouter.get('/kafka-test', async (req, res) => {
+  run1().catch(async e => {
+    console.error(e)
+    consumer && await consumer.disconnect()
+    producer && await producer.disconnect()
+    process.exit(1)
+  })
+  res.send('Kafka message tested successfully')
 })
 
 

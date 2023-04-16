@@ -38,6 +38,7 @@ backend/.env
 backend/src/services/db/.env
 backend/src/services/cache-redis/.env
 backend/src/services/kafka-client/data
+backend/src/services/kafka-client/zookeeper-data
 
 backend/src/config
 
