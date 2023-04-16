@@ -5,6 +5,7 @@ import { validateUser } from '../../utils//validators/validateUser'
 import bodyParser from 'body-parser';
 import { redisClient, redisGetAsync, redisSetAsync } from '../../services/cache-redis/index'
 import bcrypt from 'bcrypt'
+import { kafkaClient, kafkaAdmin } from '../../services/kafka-client';
 
 type User = {
   id: string,
@@ -140,6 +141,56 @@ internalRouter.get('/get-session', (req, res) => {
   res.send(`Session variable value: ${user}`);
 });
 
+// KAFKA TESTING
+const consumer = kafkaClient.consumer({ groupId: 'accounts-api' });
+const producer = kafkaClient.producer();
+
+const topic = {
+  topic: 'test-topic',
+  numPartitions: 2,
+  replicationFactor: 1,
+  replicaAssignment: [],
+  configEntries: [],
+}
+
+internalRouter.get('/kafka-set', async (req, res) => {
+  await kafkaAdmin.connect();
+  await kafkaAdmin.createTopics({
+    validateOnly: false,
+    waitForLeaders: false,
+    timeout: 500,
+    topics: [topic],
+  })
+  const producer = kafkaClient.producer()
+
+  await producer.connect()
+  await producer.send({
+    topic: 'test-topic',
+    messages: [
+      { value: 'Hello KafkaJS user!' },
+    ],
+  })
+
+  await producer.disconnect()
+  res.send('Kafka message sent')
+})
+
+internalRouter.get('/kafka-get', async (req, res) => {
+  const consumer = kafkaClient.consumer({ groupId: 'test-group' })
+
+  await consumer.connect()
+  await consumer.subscribe({ topic: 'test-topic', fromBeginning: true })
+
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }: any) => {
+      console.log({
+        value: message.value.toString(),
+      })
+    },
+  })
+  res.send('Kafka message received')
+})
+
 
 // app.get("/", (req, res) => {
 //   const sess = req.session;
@@ -172,4 +223,4 @@ internalRouter.get('/get-session', (req, res) => {
 //       }
 //       res.redirect("/")
 //   });
-// });
+// });9

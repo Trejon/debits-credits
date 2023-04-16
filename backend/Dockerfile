@@ -1,4 +1,4 @@
-FROM node:18.15-alpine3.16 as base
+FROM node:latest as base
 
 # CMD [ "npm", "install", "typescript" ]
 # CMD ["npm", "install", "-g", "nodemon"]

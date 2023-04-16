@@ -6,7 +6,6 @@ import cors from 'cors'
 import bodyParser from 'body-parser';
 import { redisStore, redisSetAsync, redisGetAsync, redisClient } from './services/cache-redis/index'
 import session from "express-session"
-import { produceAndConsumeMessage } from './services/kafka-client/index'
 
 dotenv.config()
 const port = process.env.PORT || 3001;
@@ -38,7 +37,6 @@ app.use(
   })
 )
 
-produceAndConsumeMessage()
 
 
 app.use(async (req, res, next) => {

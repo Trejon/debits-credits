@@ -37,6 +37,7 @@ backend/node_modules
 backend/.env
 backend/src/services/db/.env
 backend/src/services/cache-redis/.env
+backend/src/services/kafka-client/data
 
 backend/src/config
 
