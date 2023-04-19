@@ -1,8 +1,8 @@
-import { SchemaRegistry } from '@kafkajs/confluent-schema-registry'
+import { schemaRegistry } from '../index'
 // import { KafkaClient } from '../index'
 import avro from 'avsc'
 
-const registry = new SchemaRegistry({ host: 'http://localhost:8085' })
+// const registry = new SchemaRegistry({ host: 'http://localhost:8085' })
 
 const type = avro.Type.forSchema({
   type: 'record',

@@ -1,4 +1,5 @@
 import { Kafka } from 'kafkajs'
+import { SchemaRegistry } from '@kafkajs/confluent-schema-registry'
 
 export const kafkaClient = new Kafka({
   clientId: 'debits-credits-service',
@@ -7,6 +8,9 @@ export const kafkaClient = new Kafka({
 });
 
 export const kafkaAdmin = kafkaClient.admin();
+
+export const schemaRegistry = new SchemaRegistry({ host: 'http://localhost:8085' })
+
 
 // const producer = kafkaClient.producer();
 // const consumer = kafkaClient.consumer({ groupId: 'test-group' });
