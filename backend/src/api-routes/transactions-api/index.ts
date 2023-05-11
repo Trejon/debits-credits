@@ -16,17 +16,17 @@ transactionsRouter.use(async (req, res, next) => {
   next();
 })
 
-transactionsRouter.get('/api/v1/:user_id/transactions', async (req, res) => {
+transactionsRouter.get('/transactions/:user_id', async (req, res) => {
   const results = await knex.select('*').from('transactions').where(knex.raw('user_id = ?', [req.params.user_id]));
   res.json(results)
 })
 
-transactionsRouter.get('/api/v1/transactions/:id', async (req, res) => {
+transactionsRouter.get('transactions/:id', async (req, res) => {
   const results = await knex('transactions').where(knex.raw('id = ?', [req.params.id]));
   res.json(results)
 })
 
-transactionsRouter.post('/api/v1/transactions', async (req, res) => {
+transactionsRouter.post('/transactions/:user_id', async (req, res) => {
   console.log(`The transaction is ${JSON.stringify(req.body)}`)
   const userId = await knex.select('id').from('users').where('name', 'Michael')
   const accountId = await knex.select('id').from('accounts').where('name', 'Chase')
@@ -59,7 +59,7 @@ transactionsRouter.post('/api/v1/transactions', async (req, res) => {
   res.json(transactionData).end();
 })
 
-transactionsRouter.patch('/api/v1/transactions/:id', async (req, res) => {
+transactionsRouter.patch('/transactions/:id', async (req, res) => {
   let prevTransaction = await knex('transactions').where(knex.raw('id = ?', [req.params.id]));
 
   if (prevTransaction.length === 0) {
@@ -95,7 +95,7 @@ transactionsRouter.patch('/api/v1/transactions/:id', async (req, res) => {
   res.json(transactionData).end();
 })
 
-transactionsRouter.delete('/api/v1/transactions/:id', async (req, res) => {
+transactionsRouter.delete('/transactions/:id', async (req, res) => {
   await knex('transactions').where(knex.raw('id = ?', [req.params.id])).del(["id"])
 
   res.status(204).send(`Successfully deleted transaction ${req.params.id}`);

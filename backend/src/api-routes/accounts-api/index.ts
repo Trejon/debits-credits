@@ -17,17 +17,17 @@ accountsRouter.use(async (req, res, next) => {
   next();
 })
 
-accountsRouter.get('/api/v1/:user_id/accounts', async (req, res) => {
+accountsRouter.get('/:user_id/accounts', async (req, res) => {
   const results = await knex.select('*').from('accounts').where(knex.raw('user_id = ?', [req.params.user_id]));
   res.json(results)
 })
 
-accountsRouter.get('/api/v1/accounts/:id', async (req, res) => {
+accountsRouter.get('/accounts/:id', async (req, res) => {
   const results = await knex('accounts').where(knex.raw('id = ?', [req.params.id]));
   res.send(results)
 })
 
-accountsRouter.post('/api/v1/accounts', async (req, res) => {
+accountsRouter.post('/accounts', async (req, res) => {
   console.log(`The account is ${JSON.stringify(req.body)}`)
   const userId = await knex.select('id').from('users').where('name', 'Michael')
   // userId = JSON.stringify(userId[0].id)
@@ -58,7 +58,7 @@ accountsRouter.post('/api/v1/accounts', async (req, res) => {
   res.json(accountData).end();
 })
 
-accountsRouter.patch('/api/v1/accounts/:id', async (req, res) => {
+accountsRouter.patch('/accounts/:id', async (req, res) => {
   let prevAccount = await knex('account').where(knex.raw('id = ?', [req.params.id]));
 
   if (prevAccount.length === 0) {
@@ -92,13 +92,13 @@ accountsRouter.patch('/api/v1/accounts/:id', async (req, res) => {
   res.json(accountData).end();
 })
 
-accountsRouter.delete('/api/v1/accounts/:id', async (req, res) => {
+accountsRouter.delete('/accounts/:id', async (req, res) => {
   await knex('accounts').where(knex.raw('id = ?', [req.params.id])).del(["id"])
 
   res.status(204).send(`Successfully deleted account ${req.params.id}`);
 })
 
-// fetch('http://localhost:3001/api/v1/accounts', {
+// fetch('http://localhost:3001/accounts', {
 //   method: 'POST',
 //   headers: {
 //     'Accept': 'application/json',

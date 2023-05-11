@@ -17,7 +17,7 @@ userRouter.use(async (req, res, next) => {
   next();
 })
 
-userRouter.get('/api/v1/user/:id', async (req, res) => {
+userRouter.get('/users/:id', async (req, res) => {
   // Will change later once id is captured in some sort of global state
   // Should only fetch the logged in users info
   console.log("HERE:")
@@ -25,7 +25,7 @@ userRouter.get('/api/v1/user/:id', async (req, res) => {
   res.send(results)
 })
 
-userRouter.patch('/api/v1/users/:id', async (req, res) => {
+userRouter.patch('/users/:id', async (req, res) => {
   console.log("HERE:")
   const foundUser = await knex('users').where(knex.raw('id = ?', 1));
   if (foundUser.length === 0) {
@@ -52,7 +52,7 @@ userRouter.patch('/api/v1/users/:id', async (req, res) => {
 
 
 // when you hit this API, your req should look like
-//   fetch('http://localhost:3001/api/v1/users/1', {
+//   fetch('http://localhost:3001users/1', {
 //   method: 'PATCH',
 //   headers: {
 //     'Content-Type': 'application/json',

@@ -34,3 +34,28 @@ export const getCurrentUser = () => {
       .catch(console.log);
   };
 };
+
+export const login = (credentials: any, history: any) => {
+  return (dispatch: any) => {
+    return fetch('http://localhost:3001/api/v1/login', {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((user) => {
+        if (user.error) {
+          alert(`There was an error logging in, ${user.error}`);
+        } else {
+          dispatch(setCurrentUser(user));
+          history.push('/')
+        }
+      })
+      .catch(console.log);
+  }
+};

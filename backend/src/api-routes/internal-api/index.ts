@@ -32,12 +32,12 @@ internalRouter.use((req, res, next) => {
 
 internalRouter.use(express.json())
 
-internalRouter.get('/api/v1/login', (req, res) => {
+internalRouter.get('/login', (req, res) => {
   res.json("You need to log in")
 })
 
 // post '/api/v1/login', to: 'api/v1/sessions#create'
-internalRouter.post('/api/v1/login', async (req, res) => {
+internalRouter.post('/login', async (req, res) => {
   console.log("REQ SESSION", JSON.stringify(req.session))
   const { username, password } = req.body
   // add username and password validation logic here later.If user is authenticated send the response as success
@@ -56,7 +56,7 @@ internalRouter.post('/api/v1/login', async (req, res) => {
 })
 
 // post '/api/v1/signup', to: 'api/v1/users#create'
-internalRouter.post('/api/v1/signup', async (req, res) => {
+internalRouter.post('/signup', async (req, res) => {
   console.log(`The user is ${JSON.stringify(req.body)}`)
 
   let { first_name, last_name, username, email, password } = req.body;
@@ -106,29 +106,33 @@ internalRouter.post('/api/v1/signup', async (req, res) => {
 })
 
 // get '/api/v1/get_current_user', to: 'api/v1/sessions#get_current_user'
-internalRouter.get('/api/v1/get_current_user', async (req, res) => {
+internalRouter.get('/get_current_user', async (req, res) => {
   const user = await redisGetAsync("user").then((res: any) => JSON.parse(res))
-  return res.json(user);
+  if (user) {
+    return res.json({ user })
+  } else {
+    return res.json({ user: null })
+  }
 })
 
 // delete '/api/v1/logout', to: 'api/v1/sessions#destroy'
-internalRouter.delete('/api/v1/logout', (req, res) => {
+internalRouter.delete('/logout', (req, res) => {
   redisClient.del('user');
   res.redirect("/login")
 })
 
 // get '/api/v1/yelp', to: 'api/v1/yelp#fetch'
-internalRouter.get('/api/v1/yelp', (req, res) => {
+internalRouter.get('/yelp', (req, res) => {
   res.send('Hello World');
 })
 
 // get '/api/v1/search', to: 'api/v1/yelp#search'
-internalRouter.get('/api/v1/search', (req, res) => {
+internalRouter.get('/search', (req, res) => {
   res.send('Hello World');
 })
 
 // post '/api/v1/search', to: 'api/v1/yelp#search'
-internalRouter.post('/api/v1/search', (req, res) => {
+internalRouter.post('/search', (req, res) => {
   res.send('Hello World');
 })
 

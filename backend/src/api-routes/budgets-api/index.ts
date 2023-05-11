@@ -19,18 +19,18 @@ budgetRouter.use(async (req, res, next) => {
   next();
 })
 
-budgetRouter.get('/api/v1/:user_id/budgets', async (req, res) => {
+budgetRouter.get('/:user_id/budgets', async (req, res) => {
   const results = await knex.select('*').from('budgets').where(knex.raw('user_id = ?', [req.params.user_id]));
   res.json(results)
 })
 
-budgetRouter.get('/api/v1/budgets/:id', async (req, res) => {
+budgetRouter.get('/budgets/:id', async (req, res) => {
   // make sure you filter by the signed in user budgets
   const results = await knex('budgets').where(knex.raw('id = ?', [req.params.id]));
   res.send(results)
 })
 
-budgetRouter.post('/api/v1/budgets', async (req, res) => {
+budgetRouter.post('/budgets', async (req, res) => {
   console.log(`The budget is ${JSON.stringify(req.body)}`)
   const userId = await knex.select('id').from('users').where('name', 'Michael')
 
@@ -57,7 +57,7 @@ budgetRouter.post('/api/v1/budgets', async (req, res) => {
   res.json(budgetData).end();
 })
 
-budgetRouter.patch('/api/v1/budgets/:id', async (req, res) => {
+budgetRouter.patch('/budgets/:id', async (req, res) => {
   let prevBudget = await knex('budgets').where(knex.raw('id = ?', [req.params.id]));
 
   if (prevBudget.length === 0) {
@@ -89,13 +89,13 @@ budgetRouter.patch('/api/v1/budgets/:id', async (req, res) => {
   res.json(budgetData).end();
 })
 
-budgetRouter.delete('/api/v1/budgets/:id', async (req, res) => {
+budgetRouter.delete('/budgets/:id', async (req, res) => {
   await knex('budgets').where(knex.raw('id = ?', [req.params.id])).del(["id"])
 
   res.status(204).send(`Successfully deleted budget ${req.params.id}`);
 })
 
-// fetch('http://localhost:3001/api/v1/budgets', {
+// fetch('http://localhost:3001/budgets', {
 //   method: 'POST',
 //   headers: {
 //     'Accept': 'application/json',

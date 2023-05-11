@@ -15,30 +15,30 @@ router.use(async (req, res, next) => {
   next();
 })
 
-router.get('/', (req, res) => {
-  console.log("req.session", req.session)
-  // const sess = req.session;
-  // if (sess.username) {
-  //   if (sess.username) {
-  //     res.write(`<h1>Welcome ${sess.username} </h1><br>`)
-  //     res.write(
-  //       `<h3>This is the Home page</h3>`
-  //     );
-  //     res.end('<a href=' + '/logout' + '>Click here to log out</a >')
-  //     res.write("You have logged in")
-  //   }
-  // } else {
-  //   // res.sendFile(__dirname + "/login.html")
-  //   //   //send to login
-  //   res.write("You need to login before you can interact with this api.")
-  //   // res.redirect('/login')
-  // }
-})
+// router.get('/', (req, res) => {
+//   console.log("req.session", req.session)
+//   // const sess = req.session;
+//   // if (sess.username) {
+//   //   if (sess.username) {
+//   //     res.write(`<h1>Welcome ${sess.username} </h1><br>`)
+//   //     res.write(
+//   //       `<h3>This is the Home page</h3>`
+//   //     );
+//   //     res.end('<a href=' + '/logout' + '>Click here to log out</a >')
+//   //     res.write("You have logged in")
+//   //   }
+//   // } else {
+//   //   // res.sendFile(__dirname + "/login.html")
+//   //   //   //send to login
+//   //   res.write("You need to login before you can interact with this api.")
+//   //   // res.redirect('/login')
+//   // }
+// })
 
 
 
-router.use(internalRouter);
-router.use(transactionsRouter);
-router.use(accountsRouter);
-router.use(budgetRouter)
-router.use(userRouter);
+router.use('/api/v1', internalRouter);
+router.use('/api/v1', transactionsRouter);
+router.use('/api/v1', accountsRouter);
+router.use('/api/v1', budgetRouter)
+router.use('/api/v1', userRouter);
